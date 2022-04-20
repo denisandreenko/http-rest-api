@@ -1,6 +1,8 @@
 package store
 
-import "github.com/denisandreenko/http-rest-api/internal/app/model"
+import (
+	"github.com/denisandreenko/http-rest-api/internal/app/model"
+)
 
 // UserRepository ...
 type UserRepository struct {
