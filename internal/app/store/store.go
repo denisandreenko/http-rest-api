@@ -40,6 +40,7 @@ func (s *Store) Close() {
 	s.db.Close()
 }
 
+// User ...
 func (s *Store) User() *UserRepository {
 	if s.userRepository != nil {
 		return s.userRepository
