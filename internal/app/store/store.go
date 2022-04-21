@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Store ...
 type Store struct {
 	config         *Config
 	db             *sql.DB
