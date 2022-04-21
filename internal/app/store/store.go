@@ -6,6 +6,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
+// Store ...
 type Store struct {
 	config         *Config
 	db             *sql.DB
@@ -40,6 +41,7 @@ func (s *Store) Close() {
 	s.db.Close()
 }
 
+// User ...
 func (s *Store) User() *UserRepository {
 	if s.userRepository != nil {
 		return s.userRepository
