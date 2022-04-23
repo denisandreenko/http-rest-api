@@ -13,8 +13,8 @@ func TestUserRepository_Create(t *testing.T) {
 	defer teardown("users")
 
 	s := sqlstore.New(db)
-	u, err := s.User().Create(model.TestUser(t))
-	assert.NoError(t, err)
+	u := model.TestUser(t)
+	assert.NoError(t, s.User().Create(u))
 	assert.NotNil(t, u)
 }
 
