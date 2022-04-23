@@ -1,4 +1,4 @@
-package store
+package sqlstore
 
 import (
 	"github.com/denisandreenko/http-rest-api/internal/app/model"
