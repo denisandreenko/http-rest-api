@@ -1,7 +1,10 @@
 package sqlstore
 
 import (
+	"database/sql"
+
 	"github.com/denisandreenko/http-rest-api/internal/app/model"
+	"github.com/denisandreenko/http-rest-api/internal/app/store"
 )
 
 // UserRepository ...
@@ -37,6 +40,10 @@ func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
 		&u.Email,
 		&u.EncryptedPassword,
 	); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, store.ErrRecordNotFound
+		}
+
 		return nil, err
 	}
 
