@@ -1,5 +1,4 @@
-bind_addr = ":8080"
+bind_addr = ":8090"
 log_level = "debug"
-
-[store]
-database_url = "host=localhost dbname=restapi_dev sslmode=disable user=postgres password=root"
+database_url_docker = "host=localhost dbname=restapi_dev sslmode=disable user=postgres password=root"
+database_url = "host=localhost dbname=restapi_dev sslmode=disable"
