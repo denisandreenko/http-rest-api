@@ -4,7 +4,6 @@ import (
 	"database/sql"
 
 	"github.com/denisandreenko/http-rest-api/internal/app/store"
-	_ "github.com/lib/pq"
 )
 
 // Store ...
