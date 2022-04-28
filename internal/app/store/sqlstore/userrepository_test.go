@@ -25,9 +25,6 @@ func TestUserRepository_Find(t *testing.T) {
 
 	s := sqlstore.New(db)
 	u1 := model.TestUser(t)
-	// _, err := s.User().Find(u1.ID)
-	// assert.EqualError(t, err, store.ErrRecordNotFound.Error())
-
 	s.User().Create(u1)
 	u2, err := s.User().Find(u1.ID)
 	assert.NoError(t, err)
