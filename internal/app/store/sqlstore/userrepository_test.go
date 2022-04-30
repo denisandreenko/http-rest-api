@@ -1,6 +1,7 @@
 package sqlstore_test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/denisandreenko/http-rest-api/internal/app/model"
@@ -9,8 +10,16 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func getDatabaseURL() string {
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		databaseURL = "host=localhost dbname=restapi_test sslmode=disable"
+	}
+	return databaseURL
+}
+
 func TestUserRepository_Create(t *testing.T) {
-	db, teardown := sqlstore.TestDB(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, getDatabaseURL())
 	defer teardown("users")
 
 	s := sqlstore.New(db)
@@ -20,7 +29,7 @@ func TestUserRepository_Create(t *testing.T) {
 }
 
 func TestUserRepository_Find(t *testing.T) {
-	db, teardown := sqlstore.TestDB(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, getDatabaseURL())
 	defer teardown("users")
 
 	s := sqlstore.New(db)
@@ -32,7 +41,7 @@ func TestUserRepository_Find(t *testing.T) {
 }
 
 func TestUserRepository_FindByEmail(t *testing.T) {
-	db, teardown := sqlstore.TestDB(t, databaseURL)
+	db, teardown := sqlstore.TestDB(t, getDatabaseURL())
 	defer teardown("users")
 
 	s := sqlstore.New(db)
