@@ -3,22 +3,31 @@ package apiserver
 import (
 	"database/sql"
 	"net/http"
+	"os"
 
 	"github.com/denisandreenko/http-rest-api/internal/app/store/sqlstore"
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 )
 
+const _sessionKey = "SESSION_KEY"
+
 func Start(config *Config) error {
+	sessionKey := os.Getenv(_sessionKey)
+	if sessionKey == "" {
+		sessionKey = string(securecookie.GenerateRandomKey(32))
+		os.Setenv(_sessionKey, sessionKey)
+	}
+	sessionsStore := sessions.NewCookieStore([]byte(sessionKey))
+
 	db, err := newDB(config.DatabaseURL)
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	sessionKey := securecookie.GenerateRandomKey(32)
-	sessionsStore := sessions.NewCookieStore(sessionKey)
 	store := sqlstore.New(db)
+
 	s := newServer(store, sessionsStore)
 
 	return http.ListenAndServe(config.BindAddr, s)
