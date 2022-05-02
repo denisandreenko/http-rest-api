@@ -19,3 +19,6 @@ apiserver
 # IDE configs
 .vscode
 .idea
+
+# Environment variables
+.env
