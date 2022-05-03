@@ -9,7 +9,9 @@ import (
 
 	"github.com/denisandreenko/http-rest-api/internal/app/model"
 	"github.com/denisandreenko/http-rest-api/internal/app/store"
+	"github.com/denisandreenko/http-rest-api/internal/utils"
 	"github.com/google/uuid"
+	"github.com/gorilla/csrf"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
@@ -58,7 +60,9 @@ func (s *server) configureRouter() {
 	s.router.Use(s.setRequestID)
 	s.router.Use(s.logRequest)
 	s.router.Use(handlers.RecoveryHandler())
+	s.router.Use(csrf.Protect([]byte(utils.Getenv(_sessionKey)), csrf.Path("/"), csrf.SameSite(csrf.SameSiteLaxMode), csrf.Secure(false)))
 	s.router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
+	s.router.HandleFunc("/gettoken", s.handleGetToken())
 	s.router.HandleFunc("/users", s.handleUsersCreate()).Methods("POST")
 	s.router.HandleFunc("/sessions", s.handleSessionsCreate()).Methods("POST")
 
@@ -128,6 +132,12 @@ func (s *server) authenticateUser(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), ctxKeyUser, u)))
 	})
+}
+
+func (s *server) handleGetToken() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("X-CSRF-Token", csrf.Token(r))
+	}
 }
 
 func (s *server) handleUsersCreate() http.HandlerFunc {
