@@ -60,7 +60,7 @@ func (s *server) configureRouter() {
 	s.router.Use(s.setRequestID)
 	s.router.Use(s.logRequest)
 	s.router.Use(handlers.RecoveryHandler())
-	s.router.Use(csrf.Protect([]byte(utils.Getenv(_sessionKey)), csrf.Path("/"), csrf.SameSite(csrf.SameSiteLaxMode), csrf.Secure(false)))
+	s.router.Use(csrf.Protect([]byte(utils.Getenv(_sessionKey)), csrf.Path("/"), csrf.SameSite(csrf.SameSiteLaxMode)))
 	s.router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
 	s.router.HandleFunc("/gettoken", s.handleGetToken())
 	s.router.HandleFunc("/users", s.handleUsersCreate()).Methods("POST")
